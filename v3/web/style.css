@@ -1,0 +1,42 @@
+/* db2_pdo v1.0  @Shinjia  #2022/07/19 */
+
+* {
+    margin: 0px;
+}
+
+div.container {
+    padding: 10px;
+    margin: 0 auto;
+    width: 760px;
+}
+
+div#header {
+    padding: 10px;
+    background-color: #ffc534; 
+}
+
+div#nav {
+    padding: 10px;
+    background-color: #CCFFFF; 
+}
+
+
+div#main {
+    padding: 10px;
+    background-color: #FFFFDD; 
+}
+
+div#footer {
+    padding: 10px;
+    background-color: #AAAA33; 
+    text-align: center;
+}
+
+tr.hightlight {
+    background-color: rgb(250, 239, 32);
+    color: #000000;
+}
+
+th {
+    background-color: #AAAAAA;
+}
