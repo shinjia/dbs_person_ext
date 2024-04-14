@@ -18,27 +18,34 @@ if($ss_usertype!=DEF_LOGIN_ADMIN) {
 include '../common/function.get_entry_in_dir.php';
 
 $usercode = $_GET['usercode'] ?? '';
+$uid  = $_GET['uid'] ?? 0;
+$page = $_GET['page'] ??  1;   // 目前的頁碼
+$nump = $_GET['nump'] ?? 10;   // 每頁的筆數
+
+// 網頁連結
+$lnk_prev = 'display.php?uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
 
 // 依類型定義相對應的路徑目錄
-$path_img = '../upload/' . $usercode;
+$path_img = PATH_UPLOAD_ROOT . $usercode;
 
 // 讀取目錄列出檔案
 $a_dir = get_entry_in_dir($path_img, 'FILE');  // 讀取實際檔案
-sort($a_dir);
+if(!empty($a_dir)) {
+   sort($a_dir);
 
-// 移除非 .jpg 檔
-foreach($a_dir as $key=>$one) {
-   $tmp=explode(".", $one);
-   $file_ext   = end($tmp);  // 最後一個小數點後的文字為副檔名
-   if(strtolower($file_ext)!='jpg' && strtolower($file_ext)!='png') {
-      unset($a_dir[$key]); 
+   // 移除非 .jpg 檔
+   foreach($a_dir as $key=>$one) {
+      $tmp=explode(".", $one);
+      $file_ext   = end($tmp);  // 最後一個小數點後的文字為副檔名
+      if(strtolower($file_ext)!='jpg' && strtolower($file_ext)!='png') {
+         unset($a_dir[$key]); 
+      }
    }
 }
-
-//echo $path_img;
-//echo '<pre>';
-//print_r($a_dir);
-//echo '</pre>';
+// echo $path_img;
+// echo '<pre>';
+// print_r($a_dir);
+// echo '</pre>';
 
 $cnt = 0;
 $columns = 3;
@@ -56,6 +63,9 @@ foreach($a_dir as $one) {
    $img_size = 240;
    $show_w = 240 + 10;
    $show_h = 240 + 20;
+   
+   $url_delete = 'img_delete.php?usercode=' . $usercode . '&uid=' . $uid . '&page=' . $page . '&nump=' . $nump . '&file=' . $one;
+
    $data .= <<< HEREDOC
    <td align="center" style="width:{$show_w}px;  border:1px; border: 1px solid black;">
       <div class="table_empty">
@@ -65,7 +75,7 @@ foreach($a_dir as $one) {
          <br>
          <span style="display:none;">
          | <a href="{$file_link}">查看</a>
-         | <a href="img_delete.php?usercode={$usercode}&file={$one}" onclick="return confirm('確定要刪除嗎？ ');">刪除</span></a>
+         | <a href="{$url_delete}" onclick="return confirm('確定要刪除嗎？ ');">刪除</span></a>
          </span>
       <input type="button" value="{$one}" onclick="window.location.href='{$file_link}';">
       <input type="button" value="刪" onclick="do_delete('{$one}');">
@@ -89,20 +99,22 @@ if( ($cnt1<$columns) && ($cnt1>0) ) { // 不是最後也不是第一個
    }
    $data .= '</tr>';
 }
-
 $data .= '</table>';
 
 $data_input = <<< HEREDOC
 <form name="form1" method="post" action="img_save.php" enctype="multipart/form-data"> 
    <div class="table_empty">  
-   <table border="0">
+   <table border="0" style="border: 1px solid red; padding:4px; background-color:#FFFFAA;">
       <tr>
          <td>新檔案上傳：</td>
          <td>
          <input type="file" name="file">
          <input type="hidden" name="MAX_FILE_SIZE" value="20000000">
          <input type="hidden" name="usercode" value="{$usercode}">
-         <input type="submit" value="上傳"> (可上傳.jpg檔，或.zip自動解壓)
+         <input type="hidden" name="uid" value="{$uid}">
+         <input type="hidden" name="page" value="{$page}">
+         <input type="hidden" name="nump" value="{$nump}">
+         <input type="submit" value="上傳"> (可上傳.jpg檔)
          </td>
       </tr>
    </table>
@@ -111,13 +123,14 @@ $data_input = <<< HEREDOC
 HEREDOC;
 
 
-$head = '';
+$url_delete2 = 'img_delete.php?usercode=' . $usercode . '&uid=' . $uid . '&page=' . $page . '&nump=' . $nump . '&file=';
 
-$head .= <<< HEREDOC
+$head = <<< HEREDOC
 <script language="javascript">
 function do_delete(fname) {
    if(confirm('確定要刪除嗎？')) {
-      window.location.href= 'poster_delete.php?usercode={$usercode}&file=' + fname;
+      console.log('{$url_delete2}'+fname);
+      window.location.href= '{$url_delete2}'+fname;
    }
 }
 </script>
@@ -125,9 +138,16 @@ HEREDOC;
 
 
 $html = <<< HEREDOC
+<h2>圖檔管理</h2>
+
+<div>
+<button onclick="location.href='{$lnk_prev}';" class="btn btn-info">返回單筆顯示</button>
+</div>
+<br>
 {$data_input}
 <br>
 {$data}
+<br>
 HEREDOC;
 
 include 'pagemake.php';

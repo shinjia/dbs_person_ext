@@ -15,6 +15,7 @@ if($ss_usertype!=DEF_LOGIN_ADMIN) {
 
 //======= 以上為權限控管檢查 ==========================
 
+include '../common/function.get_entry_in_dir.php';
 
 // 接收傳入變數
 $uid = $_GET['uid'] ?? 0;
@@ -88,7 +89,47 @@ catch(PDOException $e) {
 
 db_close();
 
-$lnk_img = 'img_display.php?usercode=' . $usercode;
+// 顯示圖檔部份
+
+// 依類型定義相對應的路徑目錄
+$path_img = PATH_UPLOAD_ROOT . $usercode;
+
+// 讀取目錄列出檔案
+$a_dir = get_entry_in_dir($path_img, 'FILE');  // 讀取實際檔案
+if(!empty($a_dir)) {
+    sort($a_dir);
+
+    // 移除非 .jpg 檔
+    foreach($a_dir as $key=>$value) {
+        $tmp=explode('.', $value);
+        $file_ext   = end($tmp);  // 最後一個小數點後的文字為副檔名
+        if(strtolower($file_ext)!='jpg') {
+            unset($a_dir[$key]); 
+        }
+    }
+}
+// echo $path_img;
+// echo '<pre>';
+// print_r($a_dir);
+// echo '</pre>';
+
+$cnt = 0;
+$columns = 3;
+$data = '<div>';
+foreach($a_dir as $one) {  
+    $file_show = $path_img . '/' . $one;
+    $file_link = $path_img . '/' . $one;
+
+    $img_size = 240;
+    $show_w = 240 + 10;
+    $show_h = 240 + 20;
+
+    $data .= '<img src="' . $file_show . '" style="padding:6px; vertical-align: middle; max-width:' . $img_size . 'px; max-height:' . $img_size . 'px; _width:expression(this.width > ' . $img_size . ' && this.width > this.height ? ' . $img_size . ': auto);">';
+}
+$data .= '</div>';
+
+
+$lnk_img = 'img_display.php?usercode=' . $usercode . '&uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
 
 //網頁顯示
 $html = <<< HEREDOC
@@ -97,6 +138,8 @@ $html = <<< HEREDOC
 {$ihc_error}
 <hr>
 <p><a href="{$lnk_img}" class="btn btn-primary">管理圖檔</a></p>
+{$data}
+<br>
 HEREDOC;
 
 include 'pagemake.php';

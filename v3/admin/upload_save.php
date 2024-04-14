@@ -25,13 +25,12 @@ $allow_size = 5000 * 1024;  // 限制接受的檔案大小 (此處設定為 5MB)
 $allow_overwrite = true;   // 限制不能覆蓋相同檔名 (若接受，則相同檔名時會覆蓋舊檔)
 
 // 指定存檔的資料夾
-$path_upload = '../upload/';
 // 判斷能否存入，若無則建立新的資料夾
-if(!is_dir($path_upload)) {
-    mkdir($path_upload, 0777, true);
+if(!is_dir(PATH_UPLOAD_ROOT)) {
+    mkdir(PATH_UPLOAD_ROOT, 0777, true);
 }
 
-$path = $path_upload . $usercode . '/';
+$path = PATH_UPLOAD_ROOT . $usercode . '/';
 // 判斷能否存入，若無則建立新的資料夾
 if(!is_dir($path)) {
     mkdir($path, 0777, true);
