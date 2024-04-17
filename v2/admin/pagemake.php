@@ -35,6 +35,9 @@ function pagemake($content='', $head='') {
         <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">未定</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="logout.php">登出</a>
+        </li>
       </ul>
       <form class="d-flex" role="search" method="post" action="findp_x.php">
         <input name="key" class="form-control me-2" type="search" placeholder="輸入姓名" aria-label="Search">
