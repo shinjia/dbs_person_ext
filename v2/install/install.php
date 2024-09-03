@@ -515,7 +515,7 @@ HEREDOC;
 
 // ***** 主程式 *****
 
-$do = $_GET['do'] ?? '';
+$do = $_GET['do'] ?? 'HOME';
 
 // 接收傳入變數 (供 SQL_INPUT 及 SQL_QUERY 使用)
 $sql = $_POST['sql'] ?? '';

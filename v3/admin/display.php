@@ -64,9 +64,10 @@ HEREDOC;
 
         // 網頁連結
         $lnk_prev = 'list_page.php?uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
-        $lnk_edit =  'edit.php?uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
-        $lnk_delete = 'delete.php?uid=' . $uid . '&page=' . $page . '&nump=' . $nump;;
-        $lnk_upload =  'upload_input.php?usercode=' . $usercode . '&uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
+        $lnk_edit = 'edit.php?uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
+        $lnk_delete = 'delete.php?uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
+        $lnk_upload = 'upload_input.php?usercode=' . $usercode . '&uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
+        $lnk_img = 'img_display.php?usercode=' . $usercode . '&uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
 
         // 網頁內容
         $ihc_content = <<< HEREDOC
@@ -74,6 +75,7 @@ HEREDOC;
             <button onclick="location.href='{$lnk_prev}';" class="btn btn-info">返回列表</button>
             <button onclick="location.href='{$lnk_edit}';" class="btn btn-warning">修改</button>
             <button onclick="location.href='{$lnk_upload}';" class="btn btn-success">上傳圖片</button>
+            <button onclick="location.href='{$lnk_img}';" class="btn btn-primary">管理圖檔</button>
             <button onclick="if(confirm('確定要刪除嗎？')) {location.href='{$lnk_delete}';}" class="btn btn-danger">刪除</button>
         </p>
         {$data}
@@ -129,15 +131,13 @@ foreach($a_dir as $one) {
 $data .= '</div>';
 
 
-$lnk_img = 'img_display.php?usercode=' . $usercode . '&uid=' . $uid . '&page=' . $page . '&nump=' . $nump;
-
 //網頁顯示
 $html = <<< HEREDOC
 <h2>詳細資料</h2>
 {$ihc_content}
 {$ihc_error}
 <hr>
-<p><a href="{$lnk_img}" class="btn btn-primary">管理圖檔</a></p>
+<h2>圖片資料</h2>
 {$data}
 <br>
 HEREDOC;

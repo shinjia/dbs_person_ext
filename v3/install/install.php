@@ -39,8 +39,8 @@ CREATE TABLE person (
 
 // 如要預先新增記錄，定義於此
 $a_record[] = "INSERT INTO person(usercode, username, address, birthday, height, weight, remark) VALUES
- ('P001', 'Allen', '台北', '2021-02-03', '170','75', ''),
- ('P002', 'Bruce', '台中', '2020-08-12', '180','85', 'OK'); ";
+('P001', 'Allen', '台北', '2021-02-03', '170','75', ''),
+('P002', 'Bruce', '台中', '2020-08-12', '180','85', 'OK'); ";
 
 
 // 指定匯入匯出的資料表及對應欄位名稱
@@ -217,7 +217,6 @@ function do_add_many($add_count) {
             $_msg = $e->getMessage();
         }
     }
-
     return $_msg;
 }
 
@@ -515,7 +514,7 @@ HEREDOC;
 
 // ***** 主程式 *****
 
-$do = $_GET['do'] ?? '';
+$do = $_GET['do'] ?? 'HOME';
 
 // 接收傳入變數 (供 SQL_INPUT 及 SQL_QUERY 使用)
 $sql = $_POST['sql'] ?? '';
@@ -533,7 +532,7 @@ $add_count = $_POST['add_count'] ?? 0;
 $msg = '';
 
 // 檢查功能是否允許
-if(!defined($do)) {
+if(isset($do) && !defined($do)) {
     $msg .= '******無法執行此功能！******';
 }
 else {

@@ -40,3 +40,36 @@ tr.hightlight {
 th {
     background-color: #AAAAAA;
 }
+
+
+/* 分頁 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+}
+
+.pagination .page-item {
+    margin: 0 1px; /* 控制每個項目之間的間距 */
+}
+
+.pagination .page-item a {
+    text-decoration: none; /* 移除超連結下劃線 */
+}
+
+.pagination .page-link {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
